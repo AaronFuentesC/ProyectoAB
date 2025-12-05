@@ -1,5 +1,6 @@
 package com.codelab.proyectoab.ui.screens
 
+import android.content.Intent
 import android.content.SharedPreferences
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -14,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -170,5 +172,15 @@ fun InicioScreen(
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurface
         )
+        val context = LocalContext.current
+        Button(
+            onClick = {
+                val intent = Intent(context, SeleccionaJugadorActivity::class.java)
+                (context as MainActivity).seleccionJugadorLauncher.launch(intent)
+            },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Seleccionar jugador")
+        }
     }
 }

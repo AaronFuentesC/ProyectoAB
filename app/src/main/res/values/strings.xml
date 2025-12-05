@@ -16,4 +16,5 @@
     <string name="posicion_defensa">Defensa</string>
     <string name="posicion_centrocampista">Centrocampista</string>
     <string name="posicion_delantero">Delantero</string>
+    <string name="title_activity_selecciona_jugador">SeleccionaJugadorActivity</string>
 </resources>
