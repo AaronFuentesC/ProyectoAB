@@ -6,7 +6,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -23,12 +28,84 @@ fun InicioScreen(
 ) {
     val temaOscuro = prefs.getBoolean(MainActivity.CLAVE_TEMA_OSCURO, false)
 
+    // Nombre guardado en prefs (fuente de verdad real)
+    val nombreGuardado = prefs.getString(MainActivity.CLAVE_NOMBRE_USUARIO, "") ?: ""
+
+    // Nombre que se edita
+    var nombreTemporal by remember { mutableStateOf(nombreGuardado) }
+
+    // Controla si el usuario ya guardó un nombre alguna vez
+    var nombreGuardadoAlgunaVez by remember {
+        mutableStateOf(nombreGuardado.isNotEmpty())
+    }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 24.dp, vertical = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+        // -------- ESTADO EDITAR NOMBRE --------
+        if (!nombreGuardadoAlgunaVez) {
+
+            OutlinedTextField(
+                value = nombreTemporal,
+                onValueChange = { nombreTemporal = it },
+                label = { Text("Tu nombre") },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Button(
+                onClick = {
+                    if (nombreTemporal.isNotBlank()) {
+                        prefs.edit()
+                            .putString(
+                                MainActivity.CLAVE_NOMBRE_USUARIO,
+                                nombreTemporal.trim()
+                            )
+                            .apply()
+
+                        nombreGuardadoAlgunaVez = true
+                    }
+                },
+                enabled = nombreTemporal.isNotBlank(),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Guardar nombre")
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+        } else {
+            // -------- ESTADO SALUDO --------
+
+            val nombreRealGuardado =
+                prefs.getString(MainActivity.CLAVE_NOMBRE_USUARIO, "") ?: ""
+
+            Text(
+                "¡Hola, $nombreRealGuardado!",
+                style = MaterialTheme.typography.headlineMedium
+            )
+
+            Spacer(Modifier.height(32.dp))
+
+            Button(
+                onClick = {
+                    prefs.edit().remove(MainActivity.CLAVE_NOMBRE_USUARIO).apply()
+                    nombreTemporal = ""
+                    nombreGuardadoAlgunaVez = false
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Cambiar nombre")
+            }
+        }
+
+        // -------- CONTENIDO VISUAL Y NAVEGACIÓN --------
+
         Image(
             modifier = Modifier.height(120.dp).width(120.dp),
             painter = painterResource(R.drawable.albacete_balompie),
@@ -62,7 +139,8 @@ fun InicioScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Modo claro
+        // -------- BOTONES DE TEMA --------
+
         Button(
             onClick = {
                 prefs.edit().putBoolean(MainActivity.CLAVE_TEMA_OSCURO, false).apply()
@@ -75,7 +153,6 @@ fun InicioScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Modo oscuro
         Button(
             onClick = {
                 prefs.edit().putBoolean(MainActivity.CLAVE_TEMA_OSCURO, true).apply()

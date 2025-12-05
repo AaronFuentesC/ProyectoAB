@@ -24,7 +24,7 @@ fun MainScreen(prefs: SharedPreferences) {
             InicioScreen(navController = navController, prefs = prefs)
         }
         composable("plantilla") {
-            PlantillaScreen(navController = navController)
+            PlantillaScreen(navController = navController,prefs = prefs)
         }
         composable(
             route = "detail_screen/{id}",

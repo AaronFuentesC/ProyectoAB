@@ -15,7 +15,9 @@ import com.codelab.proyectoab.ui.theme.ProyectoABTheme
 
 class MainActivity : ComponentActivity() {
     companion object {
+        const val CLAVE_NOMBRE_USUARIO = "nombre_usuario"
         const val CLAVE_TEMA_OSCURO = "tema_oscuro"
+        const val CLAVE_JUGADORES_EXPANDIDOS = "jugadores_expandidos" // ← Nueva constante
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -38,7 +38,7 @@ fun DetalleJugadorVertical(jugador: Jugador?) {
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
-            .padding(16.dp)
+            .padding(115.dp)
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             // Foto grande al inicio
