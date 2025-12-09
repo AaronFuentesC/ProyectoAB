@@ -1,10 +1,10 @@
-package com.codelab.proyectoab.ui.screens
+package com.codelab.proyectoab
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.codelab.proyectoab.RepositorioJugadores
+import com.codelab.proyectoab.ui.screens.SeleccionaJugadorScreen
 import com.codelab.proyectoab.ui.theme.ProyectoABTheme
 
 class SeleccionaJugadorActivity : ComponentActivity() {

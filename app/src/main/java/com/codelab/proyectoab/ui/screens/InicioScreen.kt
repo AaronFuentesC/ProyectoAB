@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.codelab.proyectoab.MainActivity
 import com.codelab.proyectoab.R
+import com.codelab.proyectoab.SeleccionaJugadorActivity
 
 @Composable
 fun InicioScreen(
