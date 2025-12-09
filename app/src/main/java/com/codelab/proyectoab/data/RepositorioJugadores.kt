@@ -24,7 +24,6 @@ object RepositorioJugadores {
                 goles = 0,
                 asistencias = 0,
                 partidos = 5,
-                icono = Icons.Default.Shield,
                 urlPerfil = "https://www.albacetebalompie.es/jugadores/diego-marino",
                 imagenId = R.drawable.jugador_1
             ),
@@ -41,7 +40,6 @@ object RepositorioJugadores {
                 goles = 0,
                 asistencias = 0,
                 partidos = 9,
-                icono = Icons.Default.Shield,
                 urlPerfil = "https://www.albacetebalompie.es/jugadores/raul-lizoain",
                 imagenId = R.drawable.jugador_13
             ),
@@ -58,7 +56,6 @@ object RepositorioJugadores {
                 goles = 0,
                 asistencias = 0,
                 partidos = 7,
-                icono = Icons.Default.Shield,
                 urlPerfil = "https://www.albacetebalompie.es/jugadores/lorenzo",
                 imagenId = R.drawable.jugador_2
             ),
@@ -75,7 +72,6 @@ object RepositorioJugadores {
                 goles = 0,
                 asistencias = 0,
                 partidos = 10,
-                icono = Icons.Default.Shield,
                 urlPerfil = "https://www.albacetebalompie.es/jugadores/jonathan-gomez",
                 imagenId = R.drawable.jugador_3
             ),
@@ -92,7 +88,6 @@ object RepositorioJugadores {
                 goles = 0,
                 asistencias = 0,
                 partidos = 10,
-                icono = Icons.Default.Shield,
                 urlPerfil = "https://www.albacetebalompie.es/jugadores/javi-moreno",
                 imagenId = R.drawable.jugador_5
             ),
@@ -109,7 +104,6 @@ object RepositorioJugadores {
                 goles = 0,
                 asistencias = 0,
                 partidos = 7,
-                icono = Icons.Default.Shield,
                 urlPerfil = "https://www.albacetebalompie.es/jugadores/jon-garcia",
                 imagenId = R.drawable.jugador_14
             ),
@@ -126,7 +120,6 @@ object RepositorioJugadores {
                 goles = 0,
                 asistencias = 0,
                 partidos = 8,
-                icono = Icons.Default.Shield,
                 urlPerfil = "https://www.albacetebalompie.es/jugadores/fran-gamez",
                 imagenId = R.drawable.jugador_15
             ),
@@ -143,7 +136,6 @@ object RepositorioJugadores {
                 goles = 0,
                 asistencias = 1,
                 partidos = 10,
-                icono = Icons.Default.Shield,
                 urlPerfil = "https://www.albacetebalompie.es/jugadores/carlos-neva-tey",
                 imagenId = R.drawable.jugador_21
             ),
@@ -160,7 +152,6 @@ object RepositorioJugadores {
                 goles = 0,
                 asistencias = 0,
                 partidos = 6,
-                icono = Icons.Default.Shield,
                 urlPerfil = "https://www.albacetebalompie.es/jugadores/pepe-sanchez",
                 imagenId = R.drawable.jugador_23
             ),
@@ -177,7 +168,6 @@ object RepositorioJugadores {
                 goles = 0,
                 asistencias = 0,
                 partidos = 9,
-                icono = Icons.Default.Shield,
                 urlPerfil = "https://www.albacetebalompie.es/jugadores/vallejo",
                 imagenId = R.drawable.jugador_24
             ),
@@ -194,7 +184,6 @@ object RepositorioJugadores {
                 goles = 1,
                 asistencias = 0,
                 partidos = 9,
-                icono = Icons.Default.SportsSoccer,
                 urlPerfil = "https://www.albacetebalompie.es/jugadores/agus-medina",
                 imagenId = R.drawable.jugador_4
             ),
@@ -211,7 +200,6 @@ object RepositorioJugadores {
                 goles = 0,
                 asistencias = 0,
                 partidos = 8,
-                icono = Icons.Default.SportsSoccer,
                 urlPerfil = "https://www.albacetebalompie.es/jugadores/pacheco",
                 imagenId = R.drawable.jugador_6
             ),
@@ -228,7 +216,6 @@ object RepositorioJugadores {
                 goles = 2,
                 asistencias = 3,
                 partidos = 10,
-                icono = Icons.Default.SportsSoccer,
                 urlPerfil = "https://www.albacetebalompie.es/jugadores/riki",
                 imagenId = R.drawable.jugador_8
             ),
@@ -245,7 +232,6 @@ object RepositorioJugadores {
                 goles = 0,
                 asistencias = 1,
                 partidos = 5,
-                icono = Icons.Default.SportsSoccer,
                 urlPerfil = "https://www.albacetebalompie.es/jugadores/ale-melendez",
                 imagenId = R.drawable.jugador_17
             ),
@@ -262,7 +248,6 @@ object RepositorioJugadores {
                 goles = 1,
                 asistencias = 0,
                 partidos = 7,
-                icono = Icons.Default.SportsSoccer,
                 urlPerfil = "https://www.albacetebalompie.es/jugadores/javi-villar",
                 imagenId = R.drawable.jugador_18
             ),
@@ -279,7 +264,6 @@ object RepositorioJugadores {
                 goles = 3,
                 asistencias = 2,
                 partidos = 10,
-                icono = Icons.Default.SportsSoccer,
                 urlPerfil = "https://www.albacetebalompie.es/jugadores/puertas",
                 imagenId = R.drawable.jugador_7
             ),
@@ -296,7 +280,6 @@ object RepositorioJugadores {
                 goles = 2,
                 asistencias = 1,
                 partidos = 8,
-                icono = Icons.Default.SportsSoccer,
                 urlPerfil = "https://www.albacetebalompie.es/jugadores/higinio",
                 imagenId = R.drawable.jugador_9
             ),
@@ -313,7 +296,6 @@ object RepositorioJugadores {
                 goles = 1,
                 asistencias = 2,
                 partidos = 6,
-                icono = Icons.Default.SportsSoccer,
                 urlPerfil = "https://www.albacetebalompie.es/jugadores/jefte",
                 imagenId = R.drawable.jugador_10
             ),
@@ -330,7 +312,6 @@ object RepositorioJugadores {
                 goles = 0,
                 asistencias = 0,
                 partidos = 3,
-                icono = Icons.Default.SportsSoccer,
                 urlPerfil = "https://www.albacetebalompie.es/jugadores/valverde",
                 imagenId = R.drawable.jugador_11
             ),
@@ -347,7 +328,6 @@ object RepositorioJugadores {
                 goles = 4,
                 asistencias = 1,
                 partidos = 9,
-                icono = Icons.Default.SportsSoccer,
                 urlPerfil = "https://www.albacetebalompie.es/jugadores/lazo",
                 imagenId = R.drawable.jugador_16
             ),
@@ -364,7 +344,6 @@ object RepositorioJugadores {
                 goles = 3,
                 asistencias = 2,
                 partidos = 10,
-                icono = Icons.Default.SportsSoccer,
                 urlPerfil = "https://www.albacetebalompie.es/jugadores/escriche",
                 imagenId = R.drawable.jugador_19
             ),
@@ -381,7 +360,6 @@ object RepositorioJugadores {
                 goles = 0,
                 asistencias = 0,
                 partidos = 4,
-                icono = Icons.Default.SportsSoccer,
                 urlPerfil = "https://www.albacetebalompie.es/jugadores/morcillo",
                 imagenId = R.drawable.jugador_22
             )

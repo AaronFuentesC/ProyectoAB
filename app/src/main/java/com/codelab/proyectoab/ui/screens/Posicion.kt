@@ -28,7 +28,6 @@ data class Jugador(
     val goles: Int,
     val asistencias: Int,
     val partidos: Int,
-    val icono:@RawValue ImageVector,
     val urlPerfil: String,
     val imagenId: Int
 ): Parcelable

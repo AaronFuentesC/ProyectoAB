@@ -59,16 +59,16 @@ fun DetalleJugadorVertical(jugador: Jugador?) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 // Icono pequeño
                 jugador?.let {
-                    Icon(
-                        imageVector = it.icono,
+                    Image(
+                        painter = painterResource(id = it.imagenId),
                         contentDescription = "icono",
                         modifier = Modifier
                             .size(40.dp)
                             .clip(CircleShape)
                             .background(MaterialTheme.colorScheme.surface)
-                            .padding(6.dp),
-                        tint = MaterialTheme.colorScheme.primary
+                            .padding(6.dp)
                     )
+
                 }
 
                 Spacer(modifier = Modifier.width(8.dp))
@@ -157,7 +157,7 @@ fun FotosYEstadisticas(jugador: Jugador?) {
         // Icono (ImageVector) representando al jugador/rol
         jugador?.let {
             Icon(
-                imageVector = it.icono,
+                painter = painterResource(id = it.imagenId),
                 contentDescription = "icono jugador",
                 modifier = Modifier.size(56.dp),
                 tint = MaterialTheme.colorScheme.primary

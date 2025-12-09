@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
         if (result.resultCode == Activity.RESULT_OK) {
             val jugador = result.data?.getParcelableExtra<Jugador>(EXTRA_JUGADOR)
             jugador?.let {
-                Toast.makeText(this, "Seleccionado: ${it.nombre}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Seleccionado: ${it.nombre}", Toast.LENGTH_LONG).show()
             }
         }
     }
