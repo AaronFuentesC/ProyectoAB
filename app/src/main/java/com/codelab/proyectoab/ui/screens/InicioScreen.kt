@@ -1,7 +1,9 @@
 package com.codelab.proyectoab.ui.screens
 
+import android.Manifest
 import android.content.Intent
 import android.content.SharedPreferences
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
@@ -182,6 +184,19 @@ fun InicioScreen(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Seleccionar jugador")
+        }
+        Button(
+            onClick = {
+                val activity = navController.context as MainActivity
+                if (activity.usuarioTienePermisoContactos()) {
+                    Toast.makeText(activity, "Mostrando contactos...", Toast.LENGTH_SHORT).show()
+                } else {
+                    activity.solicitarPermisoContactos()
+                }
+            },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Ver contactos del sistema")
         }
     }
 }

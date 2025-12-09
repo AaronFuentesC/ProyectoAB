@@ -3,6 +3,7 @@ package com.codelab.proyectoab
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -14,9 +15,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.core.content.ContextCompat
 import com.codelab.proyectoab.ui.screens.Jugador
 import com.codelab.proyectoab.ui.theme.ProyectoABTheme
-
+import android.Manifest
 class MainActivity : ComponentActivity() {
     companion object {
         const val CLAVE_NOMBRE_USUARIO = "nombre_usuario"
@@ -64,4 +66,31 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+    // En la clase MainActivity, fuera de onCreate
+    private val requestContactPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+// Permiso concedido: muestra contactos
+// (En esta práctica, simulamos la lista)
+        } else {
+// Permiso denegado: muestra mensaje
+            Toast.makeText(this, "Permiso necesario para ver contactos", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun tienePermisoContactos(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.READ_CONTACTS
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+    fun solicitarPermisoContactos() {
+        requestContactPermissionLauncher.launch(Manifest.permission.READ_CONTACTS)
+    }
+    fun usuarioTienePermisoContactos(): Boolean {
+        return tienePermisoContactos()
+    }
+
 }
+
