@@ -19,6 +19,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import android.content.res.Configuration
+import androidx.compose.material3.Button
+import androidx.compose.ui.platform.LocalContext
+import com.codelab.proyectoab.MainActivity
 import com.codelab.proyectoab.R
 
 @Composable
@@ -87,6 +90,9 @@ fun DetalleJugadorVertical(jugador: Jugador?) {
             Spacer(modifier = Modifier.height(12.dp))
 
             DatosPersonales(jugador)
+
+            jugador?.let { BotonNotificacion(it) }
+
         }
 
         // "Nuevo" badge arriba a la derecha
@@ -137,6 +143,7 @@ fun DetalleJugadorHorizontal(jugador: Jugador?) {
                 DatosPersonales(jugador)
                 Spacer(modifier = Modifier.height(8.dp))
                 FotosYEstadisticas(jugador)
+                jugador?.let { BotonNotificacion(it) }
             }
         }
 
@@ -179,5 +186,26 @@ fun DatosPersonales(jugador: Jugador?) {
         Text("Altura: ${jugador?.altura ?: "-"} m", color = MaterialTheme.colorScheme.onBackground)
         Text("Peso: ${jugador?.peso ?: "-"} kg", color = MaterialTheme.colorScheme.onBackground)
         Text("País: ${jugador?.pais ?: "-"}", color = MaterialTheme.colorScheme.onBackground)
+    }
+}
+@Composable
+fun BotonNotificacion(jugador: Jugador){
+    val context = LocalContext.current
+    Button(
+        onClick = {
+            val mainActivity = context as MainActivity
+            if (mainActivity.tienePermisoNotificaciones()) {
+                mainActivity.mostrarNotificacionJugador(
+                    jugador,
+                    "¡Logro del día!",
+                    "${jugador.nombre} ha marcado su tercer gol consecutivo"
+                )
+            } else {
+                mainActivity.solicitarPermisoNotificaciones()
+            }
+        },
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Text("Notificar logro")
     }
 }
