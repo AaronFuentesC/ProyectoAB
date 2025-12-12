@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
@@ -25,6 +26,9 @@ import androidx.navigation.NavController
 import com.codelab.proyectoab.MainActivity
 import com.codelab.proyectoab.R
 import com.codelab.proyectoab.SeleccionaJugadorActivity
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
+
 
 @Composable
 fun InicioScreen(
@@ -45,10 +49,13 @@ fun InicioScreen(
     }
 
     Column(
+
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 24.dp, vertical = 24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        Arrangement.Top,
+        horizontalAlignment = Alignment.CenterHorizontally,
+
     ) {
 
         // -------- ESTADO EDITAR NOMBRE --------
@@ -144,8 +151,50 @@ fun InicioScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // -------- BOTONES DE TEMA --------
 
+        // -------- SWITCH PARA TEMA OSCURO --------
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp)
+        ) {
+            Text(
+                text = "Tema oscuro",
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.weight(1f)
+            )
+
+            var modoOscuroActual by remember { mutableStateOf(temaOscuro) }
+
+            Switch(
+                checked = modoOscuroActual,
+                onCheckedChange = { nuevoValor ->
+                    modoOscuroActual = nuevoValor
+                    prefs.edit()
+                        .putBoolean(MainActivity.CLAVE_TEMA_OSCURO, nuevoValor)
+                        .apply()
+
+                    // Recargar la actividad para aplicar el tema
+                    (navController.context as MainActivity).recreate()
+                }
+            )
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Button(
+            onClick = {
+                prefs.edit().clear().apply()
+                (navController.context as MainActivity).recreate()
+            }
+        ) {
+            Text(text="Borrar todos los datos")
+
+        }
+
+        // -------- BOTONES DE TEMA --------
+        /*
         Button(
             onClick = {
                 prefs.edit().putBoolean(MainActivity.CLAVE_TEMA_OSCURO, false).apply()
@@ -157,6 +206,12 @@ fun InicioScreen(
         }
 
         Spacer(modifier = Modifier.height(8.dp))
+        */
+
+
+        /*
+
+
 
         Button(
             onClick = {
@@ -169,13 +224,18 @@ fun InicioScreen(
         }
 
         Spacer(modifier = Modifier.height(12.dp))
+        */
 
+        /*
         Text(
             text = if (temaOscuro) "Modo: OSCURO" else "Modo: CLARO",
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurface
         )
         val context = LocalContext.current
+        */
+
+        /*
         Button(
             onClick = {
                 val intent = Intent(context, SeleccionaJugadorActivity::class.java)
@@ -184,7 +244,9 @@ fun InicioScreen(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Seleccionar jugador")
-        }
+        }*/
+
+        /*
         Button(
             onClick = {
                 val activity = navController.context as MainActivity
@@ -197,6 +259,6 @@ fun InicioScreen(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Ver contactos del sistema")
-        }
+        }*/
     }
 }

@@ -23,25 +23,29 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Intent
-import androidx.core.app.ActivityCompat
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import androidx.annotation.RequiresPermission
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import kotlin.or
+import com.codelab.proyectoab.ui.screens.AppRoot
 
 class MainActivity : ComponentActivity() {
+
     companion object {
         const val CLAVE_NOMBRE_USUARIO = "nombre_usuario"
         const val CLAVE_TEMA_OSCURO = "tema_oscuro"
-        const val CLAVE_JUGADORES_EXPANDIDOS = "jugadores_expandidos" // ← Nueva constante
+        const val CLAVE_JUGADORES_EXPANDIDOS = "jugadores_expandidos"
         const val EXTRA_JUGADOR = "jugador_seleccionado"
-        const val EXTRA_JUGADOR_ID = "jugador_id" // ← Nueva constante
+        const val EXTRA_JUGADOR_ID = "jugador_id"
     }
 
-    // A nivel de clase (fuera de onCreate)
+    // Para restaurar navegación
+    private var jugadorIdParaRestaurar: Int = -1
+
+    // Launcher para escoger jugador
     val seleccionJugadorLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -53,106 +57,119 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         crearCanalNotificaciones()
 
         // SharedPreferences
         val prefs = getSharedPreferences("ajustes_usuario", Context.MODE_PRIVATE)
-        val temaOscuro = prefs.getBoolean(CLAVE_TEMA_OSCURO, false)
+        val temaOscuroGuardado = prefs.getBoolean(CLAVE_TEMA_OSCURO, false)
 
-        // Aplicar modo de noche antes de dibujar UI
+        // Aplicar tema ANTES de setContent
         AppCompatDelegate.setDefaultNightMode(
-            if (temaOscuro) AppCompatDelegate.MODE_NIGHT_YES
+            if (temaOscuroGuardado) AppCompatDelegate.MODE_NIGHT_YES
             else AppCompatDelegate.MODE_NIGHT_NO
         )
 
-        val jugadorIdDesdeNotificacion = intent.getIntExtra(EXTRA_JUGADOR_ID, -1)
+        // Recuperar id desde notificación o savedInstanceState
+        jugadorIdParaRestaurar =
+            savedInstanceState?.getInt("jugador_restore")
+                ?: intent?.getIntExtra(EXTRA_JUGADOR_ID, -1)
+                        ?: -1
+
         enableEdgeToEdge()
+
         setContent {
-            ProyectoABTheme(darkTheme = temaOscuro) {
+            ProyectoABTheme(darkTheme = temaOscuroGuardado) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    // Pasamos prefs a la UI
-                    MainScreen(prefs = prefs,
-                        initialJugadorId = jugadorIdDesdeNotificacion)
+                    // ⬅ Aquí va ahora el root de la navegación adaptativa
+                    AppRoot(
+                        prefs = prefs,
+                        initialJugadorId = jugadorIdParaRestaurar
+                    )
                 }
             }
         }
     }
-    // En la clase MainActivity, fuera de onCreate
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt("jugador_restore", jugadorIdParaRestaurar)
+    }
+
+    // ==== PERMISOS DE CONTACTOS ====
+
     private val requestContactPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
-    ) { isGranted: Boolean ->
-        if (isGranted) {
-// Permiso concedido: muestra contactos
-// (En esta práctica, simulamos la lista)
-        } else {
-// Permiso denegado: muestra mensaje
+    ) { isGranted ->
+        if (!isGranted) {
             Toast.makeText(this, "Permiso necesario para ver contactos", Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun tienePermisoContactos(): Boolean {
-        return ContextCompat.checkSelfPermission(
+    private fun tienePermisoContactos(): Boolean =
+        ContextCompat.checkSelfPermission(
             this,
             Manifest.permission.READ_CONTACTS
         ) == PackageManager.PERMISSION_GRANTED
-    }
+
     fun solicitarPermisoContactos() {
         requestContactPermissionLauncher.launch(Manifest.permission.READ_CONTACTS)
     }
-    fun usuarioTienePermisoContactos(): Boolean {
-        return tienePermisoContactos()
-    }
-    private val notificationPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { isGranted ->
-        if (isGranted) {
-            Toast.makeText(this, "Notificaciones activadas", Toast.LENGTH_SHORT).show()
-        } else {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(
-                    this,
-                    Manifest.permission.POST_NOTIFICATIONS
-                )
-            ) {
-                Toast.makeText(this, "Las notificaciones permiten avisarte de eventos del equipo",
-                    Toast.LENGTH_LONG).show()
-            } else {
-// Usuario marcó "No volver a preguntar"
-                Toast.makeText(this, "Activa las notificaciones en Ajustes", Toast.LENGTH_LONG).show()
-                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                    data = Uri.fromParts("package", packageName, null)
+
+    fun usuarioTienePermisoContactos(): Boolean = tienePermisoContactos()
+
+    // ==== PERMISOS DE NOTIFICACIONES ====
+
+    private val notificationPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+
+            if (!isGranted) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(
+                        this,
+                        Manifest.permission.POST_NOTIFICATIONS
+                    )
+                ) {
+                    Toast.makeText(
+                        this,
+                        "Las notificaciones permiten avisarte de eventos del equipo",
+                        Toast.LENGTH_LONG
+                    ).show()
+                } else {
+                    Toast.makeText(
+                        this,
+                        "Activa las notificaciones en Ajustes",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                        data = Uri.fromParts("package", packageName, null)
+                    }
+                    startActivity(intent)
                 }
-                startActivity(intent)
             }
         }
-    }
+
     fun solicitarPermisoNotificaciones() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.POST_NOTIFICATIONS
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-            }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            !tienePermisoNotificaciones()
+        ) {
+            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
-// En Android <13, no se necesita permiso explícito
     }
-    fun tienePermisoNotificaciones(): Boolean {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+
+    fun tienePermisoNotificaciones(): Boolean =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.POST_NOTIFICATIONS
             ) == PackageManager.PERMISSION_GRANTED
-        } else {
-            true // Permiso implícito en versiones anteriores
-        }
-    }
+        } else true
+
+    // ==== NOTIFICACIONES ====
+
     private fun crearCanalNotificaciones() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val canal = NotificationChannel(
@@ -160,7 +177,7 @@ class MainActivity : ComponentActivity() {
                 "Eventos del Albacete Balompié",
                 NotificationManager.IMPORTANCE_DEFAULT
             ).apply {
-                description = "Notificaciones sobre goles, lesiones y logros de los jugadores"
+                description = "Notificaciones sobre goles, lesiones y logros"
             }
             val manager = getSystemService(NotificationManager::class.java)
             manager.createNotificationChannel(canal)
@@ -169,30 +186,32 @@ class MainActivity : ComponentActivity() {
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     fun mostrarNotificacionJugador(jugador: Jugador, titulo: String, mensaje: String) {
+
         if (!tienePermisoNotificaciones()) {
             Toast.makeText(this, "Permiso de notificaciones requerido", Toast.LENGTH_SHORT).show()
             return
         }
+
         val intent = Intent(this, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
             putExtra(EXTRA_JUGADOR_ID, jugador.id)
         }
+
         val pendingIntent = PendingIntent.getActivity(
             this,
             jugador.id,
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
+
         val builder = NotificationCompat.Builder(this, "CANAL_JUGADORES")
-            .setSmallIcon(R.drawable.ic_albacete) // ¡debe existir y ser válido!
+            .setSmallIcon(R.drawable.ic_albacete)
             .setContentTitle(titulo)
             .setContentText(mensaje)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
+
         NotificationManagerCompat.from(this).notify(jugador.id, builder.build())
     }
-
-
 }
-
