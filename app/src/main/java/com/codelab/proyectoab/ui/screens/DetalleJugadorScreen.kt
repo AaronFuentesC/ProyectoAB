@@ -23,9 +23,13 @@ import androidx.compose.material3.Button
 import androidx.compose.ui.platform.LocalContext
 import com.codelab.proyectoab.MainActivity
 import com.codelab.proyectoab.R
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.widget.Toast
 
 @Composable
-fun DetalleJugadorScreen(jugador: Jugador?) {
+fun DetalleJugadorScreen(jugador: Jugador) {
     val configuration = LocalConfiguration.current
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
     if (isLandscape) {
@@ -36,7 +40,8 @@ fun DetalleJugadorScreen(jugador: Jugador?) {
 }
 
 @Composable
-fun DetalleJugadorVertical(jugador: Jugador?) {
+fun DetalleJugadorVertical(jugador: Jugador) {
+    val context = LocalContext.current
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -91,6 +96,8 @@ fun DetalleJugadorVertical(jugador: Jugador?) {
 
             DatosPersonales(jugador)
 
+            AccionesJugador(jugador = jugador, context = context)
+
             jugador?.let { BotonNotificacion(it) }
 
         }
@@ -109,7 +116,8 @@ fun DetalleJugadorVertical(jugador: Jugador?) {
 }
 
 @Composable
-fun DetalleJugadorHorizontal(jugador: Jugador?) {
+fun DetalleJugadorHorizontal(jugador: Jugador) {
+    val context = LocalContext.current
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -143,6 +151,8 @@ fun DetalleJugadorHorizontal(jugador: Jugador?) {
                 DatosPersonales(jugador)
                 Spacer(modifier = Modifier.height(8.dp))
                 FotosYEstadisticas(jugador)
+                AccionesJugador(jugador = jugador, context = context)
+                Spacer(Modifier.height(16.dp))
                 jugador?.let { BotonNotificacion(it) }
             }
         }
@@ -207,5 +217,45 @@ fun BotonNotificacion(jugador: Jugador){
         modifier = Modifier.fillMaxWidth()
     ) {
         Text("Notificar logro")
+    }
+}
+
+@Composable
+fun AccionesJugador(jugador: Jugador, context: Context) {
+// 1. Ver web del jugador (usa urlPerfil del objeto)
+    Button(
+        onClick = {
+            val url = jugador.urlPerfil.trim()
+            if (url.isNotBlank()) {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                if (intent.resolveActivity(context.packageManager) != null) {
+                    context.startActivity(intent)
+                } else {
+                    Toast.makeText(context, "No hay navegador instalado",
+                        Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(context, "URL no disponible para este jugador",
+                    Toast.LENGTH_SHORT).show()
+            }
+        },
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Text("Ver web del jugador")
+    }
+    Spacer(modifier = Modifier.height(8.dp))
+// 2. Compartir ficha
+    Button(
+        onClick = {
+            val mensaje = "¡Mira a ${jugador.nombre} (${jugador.posicion}) del Albacete Balompié!" + "\n${jugador.urlPerfil}"
+            val intent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, mensaje)
+            }
+            context.startActivity(Intent.createChooser(intent, "Compartir con..."))
+        },
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Text("Compartir ficha")
     }
 }

@@ -1,8 +1,10 @@
 package com.codelab.proyectoab.ui.screens
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -36,6 +38,7 @@ fun InicioScreen(
     prefs: SharedPreferences
 ) {
     val temaOscuro = prefs.getBoolean(MainActivity.CLAVE_TEMA_OSCURO, false)
+    val context = LocalContext.current
 
     // Nombre guardado en prefs (fuente de verdad real)
     val nombreGuardado = prefs.getString(MainActivity.CLAVE_NOMBRE_USUARIO, "") ?: ""
@@ -191,6 +194,39 @@ fun InicioScreen(
         ) {
             Text(text="Borrar todos los datos")
 
+        }
+        Spacer(Modifier.height(24.dp))
+// Llamar al club
+        Button(
+            onClick = {
+                val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:+34967521100"))
+                if (intent.resolveActivity(context.packageManager) != null) {
+                    context.startActivity(intent)
+                } else {
+                    Toast.makeText(context, "No hay app de teléfono", Toast.LENGTH_SHORT).show()
+                }
+            },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Llamar al club")
+        }
+        Spacer(Modifier.height(8.dp))
+// Ver estadio en el mapa
+        Button(
+            onClick = {
+                val uri = Uri.parse("geo:38.9986,-1.8672?q=Estadio+Carlos+Belmonte")
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                if (intent.resolveActivity(context.packageManager) != null) {
+                    context.startActivity(intent)
+                } else {
+// Fallback a navegador
+                    context.startActivity(Intent(Intent.ACTION_VIEW,
+                        Uri.parse("https://maps.google.com/?q=38.9986,-1.8672")))
+                }
+            },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Ver estadio en el mapa")
         }
 
         // -------- BOTONES DE TEMA --------

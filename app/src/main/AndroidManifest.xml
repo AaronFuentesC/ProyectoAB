@@ -32,6 +32,29 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
+    <!-- En app/src/main/AndroidManifest.xml, fuera de <application> -->
+    <queries>
+        <!-- Para ACTION_VIEW con URLs (navegadores) -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="http" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" />
+        </intent>
+        <!-- Para ACTION_DIAL (app de teléfono) -->
+        <intent>
+            <action android:name="android.intent.action.DIAL" />
+            <data android:scheme="tel" />
+        </intent>
+        <!-- Para ACTION_SEND (compartir con WhatsApp, Gmail, etc.) -->
+        <intent>
+            <action android:name="android.intent.action.SEND" />
+            <data android:mimeType="text/plain" />
+        </intent>
+    </queries>
+
 
 
 </manifest>
