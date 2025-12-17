@@ -51,7 +51,6 @@ fun AppLandscape(navController: NavHostController, prefs: SharedPreferences){
                 label = { Text("Ajustes") }
             )
         }
-        // Contenido
         NavHost(
             navController = navController,
             startDestination = "inicio",

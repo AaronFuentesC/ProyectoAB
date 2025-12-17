@@ -17,11 +17,9 @@ import androidx.compose.runtime.LaunchedEffect
 @Composable
 fun MainScreen(prefs: SharedPreferences, initialJugadorId: Int = -1) {
     val navController = rememberNavController()
-    // Navegar automáticamente si viene de una notificación
     LaunchedEffect(initialJugadorId) {
         if (initialJugadorId != -1) {
             navController.navigate("detalle_jugador/$initialJugadorId") {
-// Opcional: evitar volver atrás a "inicio"
                 launchSingleTop = true
                 restoreState = true
             }

@@ -72,7 +72,7 @@ fun JugadorCard(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End
                 ) {
-                    Button(onClick = { navController.navigate("detail_screen/${jugador.id}") }) {
+                    Button(onClick = { navController.navigate("detalle_jugador/${jugador.id}") }) {
                         Text("Ver")
                     }
                 }

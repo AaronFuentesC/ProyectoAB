@@ -49,7 +49,6 @@ fun DetalleJugadorVertical(jugador: Jugador) {
             .padding(115.dp)
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
-            // Foto grande al inicio
             jugador?.let {
                 Image(
                     painter = painterResource(id = it.imagenId),
@@ -65,7 +64,6 @@ fun DetalleJugadorVertical(jugador: Jugador) {
             Spacer(modifier = Modifier.height(12.dp))
 
             Row(verticalAlignment = Alignment.CenterVertically) {
-                // Icono pequeño
                 jugador?.let {
                     Image(
                         painter = painterResource(id = it.imagenId),
@@ -97,12 +95,12 @@ fun DetalleJugadorVertical(jugador: Jugador) {
             DatosPersonales(jugador)
 
             AccionesJugador(jugador = jugador, context = context)
+            Spacer(Modifier.height(16.dp))
 
             jugador?.let { BotonNotificacion(it) }
 
         }
 
-        // "Nuevo" badge arriba a la derecha
         Text(
             text = "Nuevo",
             color = MaterialTheme.colorScheme.onPrimary,
@@ -171,7 +169,6 @@ fun DetalleJugadorHorizontal(jugador: Jugador) {
 @Composable
 fun FotosYEstadisticas(jugador: Jugador?) {
     Column {
-        // Icono (ImageVector) representando al jugador/rol
         jugador?.let {
             Icon(
                 painter = painterResource(id = it.imagenId),
@@ -222,7 +219,6 @@ fun BotonNotificacion(jugador: Jugador){
 
 @Composable
 fun AccionesJugador(jugador: Jugador, context: Context) {
-// 1. Ver web del jugador (usa urlPerfil del objeto)
     Button(
         onClick = {
             val url = jugador.urlPerfil.trim()
@@ -244,7 +240,6 @@ fun AccionesJugador(jugador: Jugador, context: Context) {
         Text("Ver web del jugador")
     }
     Spacer(modifier = Modifier.height(8.dp))
-// 2. Compartir ficha
     Button(
         onClick = {
             val mensaje = "¡Mira a ${jugador.nombre} (${jugador.posicion}) del Albacete Balompié!" + "\n${jugador.urlPerfil}"

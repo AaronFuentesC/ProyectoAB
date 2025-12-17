@@ -10,22 +10,15 @@ import com.codelab.proyectoab.MainActivity
 import com.codelab.proyectoab.RepositorioJugadores
 
 
-// Clase envoltorio para el estado de la tarjeta
-// Puede estar aquí o en otro archivo, como en la Solución 1
-// @Immutable // Opcional
-
 class PlantillaViewModel(private val prefs: SharedPreferences) : ViewModel() {
     private val _jugadoresUI = mutableListOf<JugadorUI>()
     val jugadoresUI: List<JugadorUI> = _jugadoresUI
     init {
-// 1. Cargar jugadores del repositorio
         val jugadores = RepositorioJugadores.getJugadores()
-// 2. Cargar IDs de jugadores expandidos
         val expandidos = prefs.getStringSet(
             MainActivity.CLAVE_JUGADORES_EXPANDIDOS,
             emptySet()
         ) ?: emptySet()
-// 3. Construir la lista con estado inicial
         _jugadoresUI.addAll(
             jugadores.map { jugador ->
                 JugadorUI(

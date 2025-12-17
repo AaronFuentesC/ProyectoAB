@@ -79,6 +79,14 @@ class MainActivity : ComponentActivity() {
 
         enableEdgeToEdge()
 
+        // Detectar deep link (ej: https://www.albacetebalompie.es/jugadores/1)
+        val data = intent?.data
+        val jugadorIdDesdeDeepLink = data?.let { uri ->
+            if (uri.host == "www.albacetebalompie.es" && uri.path?.startsWith("/jugadores/") == true) {
+                uri.lastPathSegment?.toIntOrNull() ?: -1
+            } else -1
+        } ?: -1
+
         setContent {
             ProyectoABTheme(darkTheme = temaOscuroGuardado) {
                 Surface(
@@ -184,7 +192,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
+
     fun mostrarNotificacionJugador(jugador: Jugador, titulo: String, mensaje: String) {
 
         if (!tienePermisoNotificaciones()) {

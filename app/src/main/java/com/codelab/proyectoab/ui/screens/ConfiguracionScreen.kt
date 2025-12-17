@@ -30,13 +30,10 @@ fun ConfiguracionScreen(navController: NavController,
     val navController = rememberNavController()
     val temaOscuro = prefs.getBoolean(MainActivity.CLAVE_TEMA_OSCURO, false)
 
-    // Nombre guardado en prefs (fuente de verdad real)
     val nombreGuardado = prefs.getString(MainActivity.CLAVE_NOMBRE_USUARIO, "") ?: ""
 
-    // Nombre que se edita
     var nombreTemporal by remember { mutableStateOf(nombreGuardado) }
 
-    // Controla si el usuario ya guardó un nombre alguna vez
     var nombreGuardadoAlgunaVez by remember {
         mutableStateOf(nombreGuardado.isNotEmpty())
     }
@@ -49,7 +46,6 @@ fun ConfiguracionScreen(navController: NavController,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        // -------- ESTADO EDITAR NOMBRE --------
         if (!nombreGuardadoAlgunaVez) {
 
             OutlinedTextField(
@@ -83,7 +79,6 @@ fun ConfiguracionScreen(navController: NavController,
             Spacer(modifier = Modifier.height(16.dp))
 
         } else {
-            // -------- ESTADO SALUDO --------
 
             val nombreRealGuardado =
                 prefs.getString(MainActivity.CLAVE_NOMBRE_USUARIO, "") ?: ""

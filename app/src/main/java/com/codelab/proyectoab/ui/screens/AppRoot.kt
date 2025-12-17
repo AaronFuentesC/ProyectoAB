@@ -10,7 +10,6 @@ import androidx.navigation.compose.rememberNavController
 @Composable
 fun AppRoot(prefs: SharedPreferences, initialJugadorId: Int) {
     val navController = rememberNavController()
-// Restaurar navegación si viene de notificación
     LaunchedEffect(initialJugadorId) {
         if (initialJugadorId != -1) {
             navController.navigate("detalle_jugador/$initialJugadorId") {
